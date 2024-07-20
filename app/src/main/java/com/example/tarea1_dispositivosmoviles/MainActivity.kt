@@ -2,12 +2,25 @@ package com.example.tarea1_dispositivosmoviles
 
 
 fun main() {
-    val initialMeasurement = 10.0
-    val initialUnit = "Celsius"
-    val finalUnit = "Fahrenheit"
-    val conversionFormula: (Double) -> Double = { celsius -> celsius * 9/5 + 32 }
+    val conversionFormulaCelFar: (Double) -> Double = { celsius -> celsius * 9/5 + 32 }
+    val conversionFormulaKelCel: (Double) -> Double = { kelvin -> kelvin - 273.15 }
+    val conversionFormulaFarKel: (Double) -> Double = { fahrenheit  -> 5/9 * (fahrenheit - 32) + 273.15  }
 
-    printFinalTemperature(initialMeasurement, initialUnit, finalUnit, conversionFormula)
+    val conversions = listOf(
+        Triple("Celsius", "Fahrenheit", conversionFormulaCelFar),
+        Triple("Kelvin", "Celsius", conversionFormulaKelCel),
+        Triple("Fahrenheit", "Kelvin", conversionFormulaFarKel)
+    )
+
+    for ((initialUnit, finalUnit, conversionFormula) in conversions) {
+        val initialMeasurement = when (initialUnit) {
+            "Celsius" -> 27.0
+            "Kelvin" -> 350.0
+            "Fahrenheit" -> 10.0
+            else -> throw IllegalArgumentException("Unidad desconocida")
+        }
+        printFinalTemperature(initialMeasurement, initialUnit, finalUnit, conversionFormula)
+    }
 }
 
 fun printFinalTemperature(
